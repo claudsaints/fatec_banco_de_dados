@@ -1,0 +1,90 @@
+--0 Criar banco de dados bd_sistema_bancario
+
+CREATE DATABASE bd_sistema_bancario
+WITH
+  OWNER = postgres
+  ENCODING = UTF8
+  CONNECTION LIMIT = -1;
+  
+--1 Criar 5 tabelas quaisquer
+
+CREATE TABLE aluno(
+	 cpf integer PRIMARY KEY,
+	 nome_aluno VARCHAR(100) NOT NULL,
+	 idade 	INTEGER NOT NULL,
+	 email 	VARCHAR(50) NOT NULL
+);
+CREATE TABLE nota(
+	identidade INTEGER PRIMARY KEY,
+	nota_1 INTEGER, 
+	nota_2 INTEGER,
+	nota_3 INTEGER,
+	nota_4 INTEGER,
+	FOREIGN KEY (identidade) REFERENCES aluno(cpf)
+);
+CREATE TABLE materia(
+	 nome_materia CHAR(100) PRIMARY KEY NOT NULL
+);
+CREATE TABLE professor(
+	 cpf_professor INTEGER PRIMARY KEY,
+     nome_professor VARCHAR(100) NOT NULL,
+	 idade INTEGER NOT NULL,
+	 materia CHAR(100) NOT NULL,
+	 FOREIGN KEY (materia) REFERENCES materia(nome_materia)
+);
+CREATE TABLE pais(
+	nome_pais CHAR(100) PRIMARY KEY,
+	n_estados INTEGER NOT NULL,
+	n_cidades INTEGER NOT NULL
+);
+
+--3 Criar tabelas conforme MER (Sistema Bancario):
+
+CREATE TABLE cliente(
+	 nome_cliente VARCHAR(100) PRIMARY KEY,
+	 cidade_cliente VARCHAR(50),
+	 endereco_cliente VARCHAR(100)
+);
+ 
+CREATE TABLE agencia(
+	 nome_agencia varchar(100) PRIMARY KEY,
+	 cidade_agencia varchar(50),
+	 deposito bigint
+);
+ 
+CREATE TABLE conta(
+	 numero_conta INTEGER PRIMARY KEY,
+	 saldo FLOAT(50),
+	 nome_agencia VARCHAR(100),
+	 FOREIGN KEY(nome_agencia) REFERENCES agencia(nome_agencia)
+ );
+
+CREATE TABLE emprestimo(
+ numero_emprestimo INTEGER PRIMARY KEY,
+ nome_agencia varchar(100),
+ FOREIGN KEY(nome_agencia) REFERENCES agencia(nome_agencia)
+);
+
+--4 Deletar as 5 tabelas criadas aleatoriamente
+
+DROP TABLE aluno CASCADE;
+DROP TABLE nota CASCADE;
+DROP TABLE materia CASCADE;
+DROP TABLE professor CASCADE;
+DROP TABLE Pais;
+
+-- alterar as tabelas conforme o MER atualizado
+alter table cliente add column idade INTEGER;
+alter table cliente rename column idade to idades;
+alter table cliente drop column idades;
+alter table cliente rename to tbcliente;
+
+-- Criar um esquema com o seu nome
+CREATE SCHEMA claudiodsaint;
+show search_path;
+set search_path=claudsaint
+
+DROP TABLE cliente;
+DROP TABLE conta;
+DROP TABLE emprestimo;
+DROP TABLE agencia;
