@@ -1,0 +1,54 @@
+CREATE TABLE tbl_cliente ( 
+	codigo_cliente INTEGER PRIMARY KEY, 
+	nome CHAR(255) NOT NULL, 
+	cidade CHAR(150), 
+	endereco CHAR(150) 
+);
+
+CREATE TABLE tbl_titulo ( 
+	codigo_titulo INTEGER PRIMARY KEY, 
+	titulo CHAR(100) NOT NULL, descricao CHAR(255), 
+	categoria TEXT 
+);
+
+CREATE TABLE tbl_emprestimo ( 
+	numero_emprestimo INTEGER PRIMARY KEY, 
+	codigo_cliente INTEGER, 
+	codigo_livro INTEGER 
+);
+
+CREATE TABLE tbl_livros ( 
+	cod_livro INTEGER PRIMARY KEY, 
+	codigo_titulo INTEGER, 
+	status TEXT DEFAULT 'disponivel'
+);
+
+-- 3
+CREATE DOMAIN tt_categoria TEXT CHECK(
+	VALUE IN('drama','comedia')
+);
+CREATE DOMAIN tl_status TEXT CHECK(
+	VALUE IN('disponivel,alugado')
+);
+-- 4
+ALTER TABLE tbl_titulo
+ALTER COLUMN categoria TYPE tt_categoria;
+
+ALTER TABLE tbl_livros
+ALTER COLUMN status TYPE tl_status;
+
+--5
+ALTER TABLE tbl_emprestimo
+ADD CONSTRAINT fk_cod_client
+FOREIGN KEY (codigo_cliente)
+REFERENCES tbl_cliente(codigo_cliente),
+ADD CONSTRAINT fk_cod_livro
+FOREIGN KEY (codigo_livro)
+REFERENCES tbl_livros(cod_livro);
+
+ALTER TABLE tbl_livros
+ADD CONSTRAINT fk_titulo_livr
+FOREIGN KEY (codigo_titulo)
+REFERENCES tbl_titulo(codigo_titulo);
+
+
