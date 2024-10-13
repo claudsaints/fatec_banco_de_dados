@@ -1,0 +1,34 @@
+--1 Liste os nomes das peças e a soma das suas respectivas quanti
+select * from tbl_peca
+
+SELECT p.nome, SUM(e.quantidade) FROM tbl_peca p 
+JOIN tbl_estoque e  ON p.cod_peca = e.cod_peca
+GROUP BY p.nome ;
+
+
+
+--2 Liste os nomes das peças e a soma das suas respectivas quantidades, caso a soma das peças seja maior que 20
+
+SELECT p.nome, SUM(e.quantidade) FROM tbl_peca p 
+JOIN tbl_estoque e  ON p.cod_peca = e.cod_peca
+WHERE e.quantidade > 20
+GROUP BY p.nome ;
+
+--3 Listar quantidade de fornecedores em cada cidade.
+
+SELECT  t.cidade,count(t.nome) FROM 
+tbl_fornecedor t GROUP BY t.cidade
+
+
+--4 listar quantidade de peças de cada cor
+
+SELECT p.cor, COUNT(e.quantidade) AS qtde FROM tbl_peca p 
+JOIN tbl_estoque e  ON p.cod_peca = e.cod_peca
+GROUP BY p.cor ;
+
+--5 listar quantidade de peças de cada cor. Mostrar somente as que possuem mais de 1 peça.
+
+SELECT COR, COUNT(NOME) AS QTDE
+FROM TBL_PECA
+GROUP BY COR
+HAVING COUNT(NOME) > 1
